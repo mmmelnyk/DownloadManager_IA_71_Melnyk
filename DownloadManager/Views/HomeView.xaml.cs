@@ -10,6 +10,8 @@ namespace DownloadManager.Views
         public HomeView()
         {
             InitializeComponent();
+            
+
         }
     }
 }
