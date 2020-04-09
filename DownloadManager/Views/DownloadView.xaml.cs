@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DownloadManager.ViewModels;
 
 namespace DownloadManager.Views
 {
@@ -19,9 +20,14 @@ namespace DownloadManager.Views
     /// </summary>
     public partial class DownloadView : Window
     {
-        public DownloadView()
+        public DownloadView(HomeView homeView)
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            var downloadViewModel = new DownloadViewModel(homeView);
+            DataContext = downloadViewModel;
+            downloadViewModel.Closing += (s, e) => Close();
         }
+
     }
 }

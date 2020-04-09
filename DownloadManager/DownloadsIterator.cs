@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace DownloadManager
 {
@@ -18,7 +14,7 @@ namespace DownloadManager
         // supposed to work with a particular kind of collection.
         private int _position = -1;
 
-        private bool _reverse = false;
+        private readonly bool _reverse = false;
 
         public DownloadsIterator(DownloadsCollection collection, bool reverse = false)
         {

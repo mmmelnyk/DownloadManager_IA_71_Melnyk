@@ -22,7 +22,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label Content="Url: " Grid.Row="1" Grid.Column="1" Width="45" HorizontalAlignment="Left"  Margin="2px" FontFamily="Gadugi" FontSize="16"/>
-        <TextBox Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Right" Width="296"  Margin="2px"/>
+        <TextBox Text="{Binding Path=Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Right" Width="296"  Margin="2px"/>
         <Button Content="Ok" Command="{Binding AddUrl}"  Width="37" Margin="3px" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"/>
         <Button Content="Cancel" Width="70px" Margin="3px" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
     </Grid>

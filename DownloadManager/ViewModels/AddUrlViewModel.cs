@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DownloadManager.ViewModels
 {
@@ -17,5 +13,34 @@ namespace DownloadManager.ViewModels
         }
 
         public event EventHandler Closing;
+
+        private string _url;
+
+        private RelayCommand _submitUrl;
+
+        public string Url
+        {
+            get => _url;
+            set
+            {
+                _url = value;
+                OnPropertyChanged(nameof(Url));
+            }
+        } 
+
+        public RelayCommand SubmitUrl
+        {
+            get
+            {
+                return _submitUrl ??
+                       (_submitUrl = new RelayCommand(o =>
+                       {
+
+                       }));
+            }
+        }
+
+
+
     }
 }
