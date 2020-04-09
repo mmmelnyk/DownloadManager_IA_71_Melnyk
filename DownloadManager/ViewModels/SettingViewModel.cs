@@ -40,7 +40,7 @@ namespace DownloadManager.ViewModels
                            FolderBrowserDialog fbd = new FolderBrowserDialog();
                            if (fbd.ShowDialog() == DialogResult.OK)
                            {
-                               DefaultPath = fbd.SelectedPath;
+                               _defaultPath = fbd.SelectedPath;
                            }
                        }));
             }

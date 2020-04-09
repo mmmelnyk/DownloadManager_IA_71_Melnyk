@@ -28,6 +28,5 @@ namespace DownloadManager.Views
             DataContext = downloadViewModel;
             downloadViewModel.Closing += (s, e) => Close();
         }
-
     }
 }
