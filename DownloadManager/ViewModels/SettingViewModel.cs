@@ -19,8 +19,6 @@ namespace DownloadManager.ViewModels
 
         public event EventHandler Closing;
 
-        public bool Validate = false;
-
         private RelayCommand _browsePath;
         private RelayCommand _savePath;
 

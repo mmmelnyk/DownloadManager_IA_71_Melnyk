@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DownloadManager.ViewModels;
 
 namespace DownloadManager.Views
 {
@@ -9,9 +10,11 @@ namespace DownloadManager.Views
     {
         public HomeView()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            
-
+            var homeViewModel = new HomeViewModel();
+            DataContext = homeViewModel;
+            homeViewModel.Closing += (s, e) => Close();
         }
     }
 }
