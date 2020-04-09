@@ -18,3 +18,4 @@ F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadMa
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\SettingView.baml
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\AddUrlView.baml
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\DownloadView.baml
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csprojAssemblyReference.cache

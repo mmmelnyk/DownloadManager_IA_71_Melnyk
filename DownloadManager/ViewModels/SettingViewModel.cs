@@ -59,8 +59,16 @@ namespace DownloadManager.ViewModels
                 return _savePath ??
                        (_savePath = new RelayCommand(o =>
                        {
-                           //smth
-                           Closing?.Invoke(this, EventArgs.Empty);
+                           if (!string.IsNullOrEmpty(_defaultPath))
+                           {
+                               Properties.Settings.Default.Path = _defaultPath;
+                               Properties.Settings.Default.Save();
+                               Closing?.Invoke(this, EventArgs.Empty);
+                           }
+                           else
+                           {
+                               MessageBox.Show("Please select your path.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                           }
                        }));
             }
         }
