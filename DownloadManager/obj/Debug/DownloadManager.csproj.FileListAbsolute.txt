@@ -17,3 +17,5 @@ F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadMa
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csproj.CoreCompileInputs.cache
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.exe
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.pdb
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\DownloadManager.pdb
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csprojAssemblyReference.cache

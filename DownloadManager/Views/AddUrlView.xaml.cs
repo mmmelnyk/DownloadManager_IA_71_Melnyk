@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DownloadManager.ViewModels;
 
 namespace DownloadManager.Views
 {
@@ -21,7 +22,11 @@ namespace DownloadManager.Views
     {
         public AddUrlView()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            var settingViewModel = new SettingViewModel();
+            DataContext = settingViewModel;
+            settingViewModel.Closing += (s, e) => Close();
         }
     }
 }

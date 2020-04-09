@@ -30,10 +30,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Margin="14,3" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding AddDownload}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" BorderBrush="#FF18CBE8">
             <Image Source="../Resources/ico-add-link-80.png"/>
         </Button>
-        <Button Margin="14,3" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding Test}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" BorderBrush="#FF18CBE8">
             <Image Source="../Resources/ico-delete-link-80.png"/>
         </Button>
         <Button Command="{Binding OpenSetting}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" BorderBrush="#FF18CBE8">
