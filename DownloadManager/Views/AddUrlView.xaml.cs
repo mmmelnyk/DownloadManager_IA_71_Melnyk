@@ -20,13 +20,13 @@ namespace DownloadManager.Views
     /// </summary>
     public partial class AddUrlView : Window
     {
-        public AddUrlView()
+        public AddUrlView(HomeViewModel homeViewModel)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            var settingViewModel = new SettingViewModel();
-            DataContext = settingViewModel;
-            settingViewModel.Closing += (s, e) => Close();
+            var addUrlViewModel = new AddUrlViewModel(homeViewModel);
+            DataContext = addUrlViewModel;
+            addUrlViewModel.Closing += (s, e) => Close();
         }
     }
 }

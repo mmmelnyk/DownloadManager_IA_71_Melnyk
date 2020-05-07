@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Net;
 using System.Windows.Forms;
+using DownloadManager.Models;
 using DownloadManager.Views;
 
 namespace DownloadManager.ViewModels
@@ -15,9 +16,9 @@ namespace DownloadManager.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public DownloadViewModel(HomeView homeView)
+        public DownloadViewModel(HomeViewModel homeViewModel, string Url)
         {
-            _homeView = homeView;
+            _homeView = homeViewModel;
             _webClient = new WebClient();
             _webClient.DownloadProgressChanged += _webClient_DownloadProgressChanged;
             _webClient.DownloadFileCompleted += _webClient_DownloadFileCompleted;
@@ -26,7 +27,12 @@ namespace DownloadManager.ViewModels
 
         private void _webClient_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            throw new NotImplementedException();
+            _filesContext.Files.Add(new File()
+            {
+                FileName = this.FileName,
+                FileSize = (String.Format("{0:0.##} KB", this._fileSize / 1024)),
+                DateTime = DateTime.Now
+            });
         }
 
         private void _webClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -36,7 +42,6 @@ namespace DownloadManager.ViewModels
             _fileSize = double.Parse(e.TotalBytesToReceive.ToString());
             Progress = received / _fileSize * 100;
             ProgressLabel = $"Downloaded {$"{Progress:0.##}"}%";
-            Database.FilesRow filesRow;
         }
         public event EventHandler Closing;
 
@@ -44,14 +49,15 @@ namespace DownloadManager.ViewModels
         private RelayCommand _startDownload;
         private RelayCommand _stopDownload;
 
-        private WebClient _webClient;
+        private WebClient _webClient; 
+        private FilesContext _filesContext = new FilesContext();
 
         private string _defaultPath;
         private string _url;
         public string FileName { get; set; }
         private double _fileSize;
         private double _minimum;
-        public HomeView _homeView;
+        public HomeViewModel _homeView;
         private double _progress;
         private string _progressLabel;
 

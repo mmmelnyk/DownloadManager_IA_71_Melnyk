@@ -14,11 +14,10 @@ namespace DownloadManager.ViewModels
         }
 
         public event EventHandler Closing;
-
         private RelayCommand _browsePath;
         private RelayCommand _savePath;
 
-        private string _defaultPath;
+        private string _defaultPath = Properties.Settings.Default.Path;
 
         public string DefaultPath
         {
@@ -26,7 +25,7 @@ namespace DownloadManager.ViewModels
             set
             {
                 _defaultPath = value;
-                OnPropertyChanged(nameof(DefaultPath));
+                OnPropertyChanged("DefaultPath");
             }
         }
 
@@ -40,7 +39,7 @@ namespace DownloadManager.ViewModels
                            FolderBrowserDialog fbd = new FolderBrowserDialog();
                            if (fbd.ShowDialog() == DialogResult.OK)
                            {
-                               _defaultPath = fbd.SelectedPath;
+                               DefaultPath = fbd.SelectedPath;
                            }
                        }));
             }
@@ -58,6 +57,7 @@ namespace DownloadManager.ViewModels
                                Properties.Settings.Default.Path = _defaultPath;
                                Properties.Settings.Default.Save();
                                Closing?.Invoke(this, EventArgs.Empty);
+                               MessageBox.Show("Default path is: "+_defaultPath.ToString(), "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                            }
                            else
                            {

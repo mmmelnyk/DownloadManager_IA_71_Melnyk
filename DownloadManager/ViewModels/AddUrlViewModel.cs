@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Forms;
+using DownloadManager.Models;
+using DownloadManager.Views;
 
 namespace DownloadManager.ViewModels
 {
@@ -15,8 +18,14 @@ namespace DownloadManager.ViewModels
         public event EventHandler Closing;
 
         private string _url;
+        private HomeViewModel _homeViewModel;
 
-        private RelayCommand _submitUrl;
+        private RelayCommand _addUrl;
+
+        public AddUrlViewModel(HomeViewModel homeViewModel)
+        {
+            _homeViewModel = homeViewModel;
+        }
 
         public string Url
         {
@@ -26,16 +35,32 @@ namespace DownloadManager.ViewModels
                 _url = value;
                 OnPropertyChanged(nameof(Url));
             }
-        } 
+        }
+        //url for test
+        //http://ipv4.download.thinkbroadband.com/200MB.zip
 
-        public RelayCommand SubmitUrl
+        public RelayCommand AddUrl
         {
             get
             {
-                return _submitUrl ??
-                       (_submitUrl = new RelayCommand(o =>
+                return _addUrl ??
+                       (_addUrl = new RelayCommand(o =>
                        {
+                           if (!string.IsNullOrEmpty(_url))
+                           {
+                               // Create receiver, command, and invoker
+                               DownloadView dwnViewModel = new DownloadView(_homeViewModel, Url);
+                               Command command = new OpenCommand(dwnViewModel);
+                               Invoker invoker = new Invoker();
 
+                               // Set and execute command
+                               invoker.SetCommand(command);
+                               invoker.ExecuteCommand();
+                           }
+                           else
+                           {
+                               MessageBox.Show("Please write your URL.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                           }
                        }));
             }
         }

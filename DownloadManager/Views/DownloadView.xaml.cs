@@ -20,11 +20,11 @@ namespace DownloadManager.Views
     /// </summary>
     public partial class DownloadView : Window
     {
-        public DownloadView(HomeView homeView)
+        public DownloadView(HomeViewModel homeViewModel, string url)
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            var downloadViewModel = new DownloadViewModel(homeView);
+            var downloadViewModel = new DownloadViewModel(homeViewModel, url);
             DataContext = downloadViewModel;
             downloadViewModel.Closing += (s, e) => Close();
         }
