@@ -18,8 +18,8 @@ namespace DownloadManager.ViewModels
         public event EventHandler Closing;
 
         private string _url;
+        private DownloadView _dwdView;
         private HomeViewModel _homeViewModel;
-
         private RelayCommand _addUrl;
 
         public AddUrlViewModel(HomeViewModel homeViewModel)
@@ -36,8 +36,6 @@ namespace DownloadManager.ViewModels
                 OnPropertyChanged(nameof(Url));
             }
         }
-        //url for test
-        //http://ipv4.download.thinkbroadband.com/200MB.zip
 
         public RelayCommand AddUrl
         {
@@ -49,9 +47,8 @@ namespace DownloadManager.ViewModels
                            if (!string.IsNullOrEmpty(_url))
                            {
                                // Create receiver, command, and invoker
-                               DownloadView dwnViewModel = new DownloadView(_homeViewModel, Url);
-                               Command command = new OpenCommand(dwnViewModel);
-                               Invoker invoker = new Invoker();
+                               var command = new OpenCommand(new DownloadView(_homeViewModel, Url));
+                               var invoker = new Invoker();
 
                                // Set and execute command
                                invoker.SetCommand(command);
@@ -64,8 +61,5 @@ namespace DownloadManager.ViewModels
                        }));
             }
         }
-
-
-
     }
 }

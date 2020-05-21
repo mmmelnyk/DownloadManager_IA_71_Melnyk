@@ -16,5 +16,13 @@ namespace DownloadManager.Views
             DataContext = homeViewModel;
             homeViewModel.Closing += (s, e) => Close();
         }
+
+        public HomeView(HomeViewModel homeViewModel)
+        {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            InitializeComponent();
+            DataContext = homeViewModel;
+            homeViewModel.Closing += (s, e) => Close();
+        }
     }
 }

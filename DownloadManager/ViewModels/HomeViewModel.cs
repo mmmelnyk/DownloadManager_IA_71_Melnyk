@@ -11,9 +11,46 @@ using DownloadManager.Views;
 
 namespace DownloadManager.ViewModels
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : INotifyPropertyChanged, IObserver<File>
     {
+        //TODO url for test
+        //http://ipv4.download.thinkbroadband.com/200MB.zip
+        //observer part start
+        private IDisposable _unsubscriber;
+
+        public virtual void Subscribe(IObservable<File> provider)
+        {
+            if (provider != null)
+                _unsubscriber = provider.Subscribe(this);
+        }
+
+        public virtual void OnCompleted()
+        {
+            //TODO inplement download competed alert
+            Console.WriteLine("The download has completed!");
+            this.Unsubscribe();
+        }
+
+        public virtual void OnError(Exception e)
+        {
+            //TODO inplement error download alert
+            Console.WriteLine("Error!");
+        }
+
+        public virtual void OnNext(File value)
+        {
+            MessageBox.Show("New Url is added!");
+            FilesList.Add(value);
+        }
+
+        public virtual void Unsubscribe()
+        {
+            _unsubscriber.Dispose();
+        }
+        //observer part end
+
         public event PropertyChangedEventHandler PropertyChanged;
+        private bool _activeStatus = true;
 
         public void OnPropertyChanged(string prop)
         {
@@ -25,9 +62,17 @@ namespace DownloadManager.ViewModels
         private RelayCommand _openSetting;
         private RelayCommand _addUrl;
         private RelayCommand _removeUrl;
+        private List<File> _filesList = new List<File>();
 
-        private RelayCommand _test;
-
+        public List<File> FilesList
+        {
+            get => _filesList;
+            set
+            {
+                _filesList = value;
+                OnPropertyChanged(nameof(FilesList));
+            }
+        }
 
         public RelayCommand OpenSetting
         {
@@ -56,7 +101,7 @@ namespace DownloadManager.ViewModels
                        (_addUrl = new RelayCommand(o =>
                        {
                            // Create receiver, command, and invoker
-                           AddUrlView addUrlView = new AddUrlView(this);
+                           AddUrlView addUrlView = new AddUrlView(this);//receiver 
                            Command command = new OpenCommand(addUrlView);
                            Invoker invoker = new Invoker();
 
@@ -80,41 +125,42 @@ namespace DownloadManager.ViewModels
             }
         }
 
-        public RelayCommand Test
-        {
-            get
-            {
-                return _test ??
-                       (_test = new RelayCommand(o =>
-                       {
-                           using (var ctx = new FilesContext())
-                           {
-                               var file = new File()
-                               {
-                                   FileName = "Bill",
-                                   DateTime = DateTime.Now
-                               };
-                               ctx.Files.Add(file);
-                               ctx.SaveChanges();
-                           }
-                           var collection = new DownloadsCollection();
-                           collection.AddItem("First");
-                           collection.AddItem("Second");
-                           collection.AddItem("Third");
+        //private RelayCommand _test;
+        //public RelayCommand Test
+        //{
+        //    get
+        //    {
+        //        return _test ??
+        //               (_test = new RelayCommand(o =>
+        //               {
+        //                   using (var ctx = new FilesContext())
+        //                   {
+        //                       var file = new File()
+        //                       {
+        //                           FileName = "Bill",
+        //                           DateTime = DateTime.Now
+        //                       };
+        //                       ctx.Files.Add(file);
+        //                       ctx.SaveChanges();
+        //                   }
+        //                   var collection = new DownloadsCollection();
+        //                   collection.AddItem("First");
+        //                   collection.AddItem("Second");
+        //                   collection.AddItem("Third");
 
-                           Console.WriteLine("Straight traversal:");
+        //                   Console.WriteLine("Straight traversal:");
 
-                           foreach (var element in collection)
-                           {
-                               MessageBox.Show(element.ToString());
-                           }
+        //                   foreach (var element in collection)
+        //                   {
+        //                       MessageBox.Show(element.ToString());
+        //                   }
 
-                           //Console.WriteLine("\nReverse traversal:");
+        //                   //Console.WriteLine("\nReverse traversal:");
 
-                           collection.ReverseDirection();
+        //                   collection.ReverseDirection();
 
-                       }));
-            }
-        }
+        //               }));
+        //    }
+        //}
     }
 }

@@ -32,13 +32,8 @@
         <Button Content="..." Command="{Binding BrowsePath}" Width="37" Margin="3px" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left"/>
         <Button Content="Start" Command="{Binding StartDownload}" Width="70px" Margin="0,10,85,35" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right"/>
         <Button Content="Stop" Command="{Binding StopDownload}" Width="70px" Margin="0,10,10,35" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right"/>
-        <TextBox Text="{Binding Path=DefaultPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Right" Width="323"  Margin="4px"/>
+        <TextBox Text="{Binding Path=DefaultPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1"  Width="323"  Margin="4px"/>
         <Label Content="Path: " Grid.Row="2" Grid.Column="1" Width="70" HorizontalAlignment="Left"  Margin="3px" FontFamily="Gadugi" FontSize="14"/>
-        <!--Minimum="0"-->
-        <ProgressBar x:Name="ProgressBar" 
-                     Value="{Binding Progress}" 
-                     Maximum="{Binding Maximum}" 
-                     Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="75,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="323"/>
-        <Label Content="{Binding ProgressLabel}" Grid.Row="4" Grid.Column="1" Width="100" HorizontalAlignment="Center" FontFamily="Gadugi" FontSize="12" Margin="187,6,115,3" RenderTransformOrigin="0.92,0.515"/>
+        <Label Content="{Binding ProgressLabel}" Grid.Row="3" Grid.Column="1" Width="120px" HorizontalAlignment="Center" FontFamily="Gadugi" FontSize="12"/>
     </Grid>
 </Window>

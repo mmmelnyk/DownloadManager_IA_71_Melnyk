@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Net;
 using System.Windows.Forms;
 using DownloadManager.Models;
@@ -7,8 +9,57 @@ using DownloadManager.Views;
 
 namespace DownloadManager.ViewModels
 {
-    class DownloadViewModel : INotifyPropertyChanged
+    class DownloadViewModel : INotifyPropertyChanged, IObservable<File>
     {
+        //observable starts
+        //possible observers are: main window, email notifier or browser plugin
+        private List<IObserver<File>> observers;
+
+        public IDisposable Subscribe(IObserver<File> observer)
+        {
+            if (!observers.Contains(observer))
+                observers.Add(observer);
+            return new Unsubscriber(observers, observer);
+        }
+
+        private class Unsubscriber : IDisposable
+        {
+            private List<IObserver<File>> _observers;
+            private IObserver<File> _observer;
+
+            public Unsubscriber(List<IObserver<File>> observers, IObserver<File> observer)
+            {
+                this._observers = observers;
+                this._observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
+        }
+
+        public void PublishNewFile(File file)
+        {
+            foreach (var observer in observers)
+            {
+                if (file == null)
+                    observer.OnError(new Exception());
+                else
+                    observer.OnNext(file);
+            }
+        }
+
+        public void EndDownload()
+        {
+            foreach (var observer in observers.ToArray())
+                if (observers.Contains(observer))
+                    observer.OnCompleted();
+
+            observers.Clear();
+        }
+        //observable ends
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string prop)
@@ -16,28 +67,39 @@ namespace DownloadManager.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public DownloadViewModel(HomeViewModel homeViewModel, string Url)
+        public DownloadViewModel(HomeViewModel homeViewModel, string url)
         {
-            _homeView = homeViewModel;
+            _url = url;
+            observers = new List<IObserver<File>>();
+            homeViewModel.Subscribe(this);
             _webClient = new WebClient();
             _webClient.DownloadProgressChanged += _webClient_DownloadProgressChanged;
             _webClient.DownloadFileCompleted += _webClient_DownloadFileCompleted;
-            _url = Url;//check this
         }
 
         private void _webClient_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            _filesContext.Files.Add(new File()
+            _newFile = new File()
             {
+                Url = this.Url,
                 FileName = this.FileName,
                 FileSize = (String.Format("{0:0.##} KB", this._fileSize / 1024)),
                 DateTime = DateTime.Now
-            });
+            };
+            _filesContext.Files.Add(_newFile);
+            _filesContext.SaveChanges();
+            this.PublishNewFile(_newFile);
+            HomeView home = new HomeView();
+            var command = new OpenCommand(home);
+            var invoker = new Invoker();
+
+            // Set and execute command
+            invoker.SetCommand(command);
+            invoker.ExecuteCommand();
         }
 
         private void _webClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Minimum = 0;
             var received = double.Parse(e.BytesReceived.ToString());
             _fileSize = double.Parse(e.TotalBytesToReceive.ToString());
             Progress = received / _fileSize * 100;
@@ -49,17 +111,14 @@ namespace DownloadManager.ViewModels
         private RelayCommand _startDownload;
         private RelayCommand _stopDownload;
 
-        private WebClient _webClient; 
-        private FilesContext _filesContext = new FilesContext();
-
-        private string _defaultPath;
+        readonly WebClient _webClient; 
+        readonly FilesContext _filesContext = new FilesContext();
+        private string _defaultPath = Properties.Settings.Default.Path;
         private string _url;
         public string FileName { get; set; }
         private double _fileSize;
-        private double _minimum;
-        public HomeViewModel _homeView;
-        private double _progress;
         private string _progressLabel;
+        private File _newFile;
 
         public string ProgressLabel
         {
@@ -71,35 +130,7 @@ namespace DownloadManager.ViewModels
             }
         }
 
-        public double Progress
-        {
-            get => _progress; 
-            set
-            {
-                _progress = value;
-                OnPropertyChanged("Progress");//may be not necessary 
-            }
-        }
-
-        public double Maximum
-        {
-            get => _fileSize;
-            set
-            {
-                _fileSize = value;
-                OnPropertyChanged(nameof(Maximum));
-            }
-        }
-
-        public double Minimum
-        {
-            get => _minimum;
-            set
-            {
-                _minimum = value;
-                OnPropertyChanged(nameof(Minimum));
-            }
-        }
+        public double Progress { get; set; }
 
         public string Url
         {
@@ -149,7 +180,6 @@ namespace DownloadManager.ViewModels
                     FileName = System.IO.Path.GetFileName(uri.AbsolutePath);
                     _webClient.DownloadFileAsync(uri, Properties.Settings.Default.Path + "/" + FileName);
                 });
-
             }
         }
 
@@ -161,7 +191,6 @@ namespace DownloadManager.ViewModels
                 {
                     _webClient.CancelAsync();
                 });
-
             }
         }
     }

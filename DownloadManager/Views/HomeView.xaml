@@ -23,10 +23,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-        <ListView Grid.ColumnSpan="6" Grid.Row="1" Grid.Column="0" Margin="3px">
+        <ListView ItemsSource="{Binding FilesList}" Grid.Row="1" Grid.ColumnSpan="6">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="#" Width="60px" DisplayMemberBinding="{Binding FileId}" />
+                    <GridViewColumn Header="Url" Width="300px" DisplayMemberBinding="{Binding FileUrl}" />
+                    <GridViewColumn Header="File name" Width="40px" DisplayMemberBinding="{Binding FileName}" />
+                    <GridViewColumn Header="Size" Width="40px" DisplayMemberBinding="{Binding FileSize}" />
+                    <GridViewColumn Header="Date time" Width="40px" DisplayMemberBinding="{Binding FileDate}" />
                 </GridView>
             </ListView.View>
         </ListView>
