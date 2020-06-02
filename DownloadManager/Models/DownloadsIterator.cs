@@ -1,6 +1,4 @@
-﻿
-
-namespace DownloadManager
+﻿namespace DownloadManager.Models
 {
     class DownloadsIterator : Iterator
     {

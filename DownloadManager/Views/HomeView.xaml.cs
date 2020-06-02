@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DownloadManager.Models;
 using DownloadManager.ViewModels;
 
 namespace DownloadManager.Views

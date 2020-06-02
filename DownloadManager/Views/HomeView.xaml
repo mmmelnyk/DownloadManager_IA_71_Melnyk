@@ -4,7 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Download Manager" Height="450" Width="610"
+        Title="Download Manager" 
+        Height="460" 
+        Width="670"
+        MinHeight="460"
+        MinWidth="670"
         Icon="../Resources/ico-download-96.png"
         >
     <Window.Background>
@@ -16,21 +20,21 @@
             <ColumnDefinition Width="60*"/>
             <ColumnDefinition Width="60*"/>
             <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="67*"/>
-            <ColumnDefinition Width="338*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="300*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding FilesList}" Grid.Row="1" Grid.ColumnSpan="6">
+        <ListView ItemsSource="{Binding FilesList, Mode=TwoWay}" Grid.Row="1" Grid.ColumnSpan="6" Height="381" VerticalAlignment="Bottom" MaxWidth="670px">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="#" Width="60px" DisplayMemberBinding="{Binding FileId}" />
-                    <GridViewColumn Header="Url" Width="300px" DisplayMemberBinding="{Binding FileUrl}" />
-                    <GridViewColumn Header="File name" Width="40px" DisplayMemberBinding="{Binding FileName}" />
-                    <GridViewColumn Header="Size" Width="40px" DisplayMemberBinding="{Binding FileSize}" />
-                    <GridViewColumn Header="Date time" Width="40px" DisplayMemberBinding="{Binding FileDate}" />
+                    <GridViewColumn Header="#" Width="50px" DisplayMemberBinding="{Binding Path=ID}" />
+                    <GridViewColumn Header="Url" Width="300px" DisplayMemberBinding="{Binding Path=Url}" />
+                    <GridViewColumn Header="File name" Width="90px" DisplayMemberBinding="{Binding Path=FileName}" />
+                    <GridViewColumn Header="Size" Width="70px" DisplayMemberBinding="{Binding Path=FileSize}" />
+                    <GridViewColumn Header="Date time" Width="130px" DisplayMemberBinding="{Binding Path=DateTime}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -42,6 +46,15 @@
         </Button>
         <Button Command="{Binding OpenSetting}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" BorderBrush="#FF18CBE8">
             <Image Source="../Resources/ico-settings-64.png"/>
+        </Button>
+        <Button Command="{Binding AllFiles}" Margin="4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+            All Files
+        </Button>
+        <Button Command="{Binding TodayFiles}" Margin="4" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="0" BorderBrush="#FF18CBE8">
+            Downloaded today
+        </Button>
+        <Button Command="{Binding BiggestFiles}" Margin="4" HorizontalAlignment="Center" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+            Biggest Files
         </Button>
     </Grid>
 </Window>

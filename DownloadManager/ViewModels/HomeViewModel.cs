@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using DownloadManager.Models;
 using DownloadManager.Views;
@@ -14,7 +11,9 @@ namespace DownloadManager.ViewModels
     public class HomeViewModel : INotifyPropertyChanged, IObserver<File>
     {
         //TODO url for test
-        //http://ipv4.download.thinkbroadband.com/200MB.zip
+        //http://212.183.159.230/5MB.zip 5mb
+        //http://212.183.159.230/10MB.zip 10mb
+        //http://212.183.159.230/50MB.zip 50mb
         //observer part start
         private IDisposable _unsubscriber;
 
@@ -39,7 +38,7 @@ namespace DownloadManager.ViewModels
 
         public virtual void OnNext(File value)
         {
-            MessageBox.Show("New Url is added!");
+            MessageBox.Show("New file: "+value.FileName+" is downloaded");
             FilesList.Add(value);
         }
 
@@ -50,7 +49,6 @@ namespace DownloadManager.ViewModels
         //observer part end
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private bool _activeStatus = true;
 
         public void OnPropertyChanged(string prop)
         {
@@ -62,7 +60,11 @@ namespace DownloadManager.ViewModels
         private RelayCommand _openSetting;
         private RelayCommand _addUrl;
         private RelayCommand _removeUrl;
+        private RelayCommand _todayFiles;
+        private RelayCommand _allFiles;
+        private RelayCommand _biggestFiles;
         private List<File> _filesList = new List<File>();
+        private readonly FilesContext _filesContext = new FilesContext();
 
         public List<File> FilesList
         {
@@ -105,6 +107,7 @@ namespace DownloadManager.ViewModels
                            Command command = new OpenCommand(addUrlView);
                            Invoker invoker = new Invoker();
 
+                           OnClosing(EventArgs.Empty);
                            // Set and execute command
                            invoker.SetCommand(command);
                            invoker.ExecuteCommand();
@@ -125,6 +128,53 @@ namespace DownloadManager.ViewModels
             }
         }
 
+        public RelayCommand TodayFiles
+        {
+            get
+            {
+                return _todayFiles ??
+                       (_todayFiles = new RelayCommand(o =>
+                       {
+                           var filesToday = new FilesToday();
+                           FilesList = filesToday.Run();
+                       }));
+            }
+        }
+
+        public RelayCommand BiggestFiles
+        {
+            get
+            {
+                return _biggestFiles ??
+                       (_biggestFiles = new RelayCommand(o =>
+                       {
+                           var filesToday = new FilesBiggest();
+                           FilesList = filesToday.Run();
+                       }));
+            }
+        }
+
+        public RelayCommand AllFiles
+        {
+            get
+            {
+                return _allFiles ??
+                       (_allFiles = new RelayCommand(o =>
+                       {
+                           FilesList = _filesContext.Files.ToList();
+                       }));
+            }
+        }
+
+        public HomeViewModel()
+        { 
+            FilesList = _filesContext.Files.ToList();
+        }
+
+        private void OnClosing(EventArgs e)
+        {
+            Closing?.Invoke(this, e);
+        }
         //private RelayCommand _test;
         //public RelayCommand Test
         //{
