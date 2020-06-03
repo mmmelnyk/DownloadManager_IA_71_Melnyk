@@ -14,6 +14,8 @@ namespace DownloadManager.ViewModels
         //http://212.183.159.230/5MB.zip 5mb
         //http://212.183.159.230/10MB.zip 10mb
         //http://212.183.159.230/50MB.zip 50mb
+        //http://212.183.159.230/512MB.zip
+        //http://212.183.159.230/1GB.zip
         //observer part start
         private IDisposable _unsubscriber;
 
@@ -63,8 +65,10 @@ namespace DownloadManager.ViewModels
         private RelayCommand _todayFiles;
         private RelayCommand _allFiles;
         private RelayCommand _biggestFiles;
+        private RelayCommand _groupFiles;
         private List<File> _filesList = new List<File>();
         private readonly FilesContext _filesContext = new FilesContext();
+        private readonly string sourcePath = Properties.Settings.Default.Path;
 
         public List<File> FilesList
         {
@@ -154,6 +158,47 @@ namespace DownloadManager.ViewModels
             }
         }
 
+        public RelayCommand GroupFiles
+        {
+            get
+            {
+                return _groupFiles ??
+                       (_groupFiles = new RelayCommand(o =>
+                       {
+                           GetGroupedFiles();
+                           MessageBox.Show(@"Files were grouped in '" + sourcePath+@"' !");
+                       }));
+            }
+        }
+
+        private Folder GetGroupedFiles()
+        {
+            var root = new Folder("root");
+            string tmpMonth="";
+            string tmpPath="";
+            string sourceFile;
+            string destinationFile;
+            Folder tmpFolder= new Folder("root");
+            foreach (var file in _filesContext.Files.ToList())
+            {
+                if (file.DateTime.ToString("MM yyyy") != tmpMonth)
+                {
+                    if(tmpFolder.GetName()!="root")
+                        root.Add(tmpFolder);
+                    tmpMonth = file.DateTime.ToString("MM yyyy");
+                    tmpPath = System.IO.Path.Combine(sourcePath, tmpMonth);
+                    tmpFolder = new Folder(tmpPath);
+                }
+                tmpFolder.Add(new FileItem(file.FileName));
+                sourceFile = System.IO.Path.Combine(sourcePath, file.FileName);
+                System.IO.Directory.CreateDirectory(tmpPath);
+                destinationFile = System.IO.Path.Combine(tmpPath, file.FileName);
+                // To move a file or folder to a new location:
+                System.IO.File.Move(sourceFile, destinationFile);
+            }
+            return root;
+        }
+
         public RelayCommand AllFiles
         {
             get
@@ -168,7 +213,7 @@ namespace DownloadManager.ViewModels
 
         public HomeViewModel()
         { 
-            FilesList = _filesContext.Files.ToList();
+            //FilesList = _filesContext.Files.ToList();
         }
 
         private void OnClosing(EventArgs e)

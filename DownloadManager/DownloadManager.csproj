@@ -83,10 +83,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Command.cs" />
+    <Compile Include="Models\Component.cs" />
     <Compile Include="Models\DataAccess.cs" />
     <Compile Include="Models\DownloadsCollection.cs" />
     <Compile Include="Models\DownloadsIterator.cs" />
+    <Compile Include="Models\FileItem.cs" />
     <Compile Include="Models\FilesBiggest.cs" />
+    <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Invoker.cs" />
     <Compile Include="Models\Iterator.cs" />
     <Compile Include="Models\IteratorAggregate.cs" />

@@ -53,8 +53,11 @@
         <Button Command="{Binding TodayFiles}" Margin="4" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="0" BorderBrush="#FF18CBE8">
             Downloaded today
         </Button>
-        <Button Command="{Binding BiggestFiles}" Margin="4" HorizontalAlignment="Center" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding BiggestFiles}" Margin="56,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
             Biggest Files
+        </Button>
+        <Button Command="{Binding GroupFiles}" Margin="136,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+            Group Files
         </Button>
     </Grid>
 </Window>
