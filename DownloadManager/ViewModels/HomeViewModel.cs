@@ -28,19 +28,19 @@ namespace DownloadManager.ViewModels
         public virtual void OnCompleted()
         {
             //TODO inplement download competed alert
-            Console.WriteLine("The download has completed!");
+            Console.WriteLine(@"The download has completed!");
             this.Unsubscribe();
         }
 
         public virtual void OnError(Exception e)
         {
             //TODO inplement error download alert
-            Console.WriteLine("Error!");
+            Console.WriteLine(@"Error!");
         }
 
         public virtual void OnNext(File value)
         {
-            MessageBox.Show("New file: "+value.FileName+" is downloaded");
+            MessageBox.Show(@"New file: "+value.FileName+@" is downloaded");
             FilesList.Add(value);
         }
 
@@ -68,7 +68,8 @@ namespace DownloadManager.ViewModels
         private RelayCommand _groupFiles;
         private List<File> _filesList = new List<File>();
         private readonly FilesContext _filesContext = new FilesContext();
-        private readonly string sourcePath = Properties.Settings.Default.Path;
+        private readonly string _sourcePath = Properties.Settings.Default.Path;
+        private Folder _groupedFiles;
 
         public List<File> FilesList
         {
@@ -127,7 +128,7 @@ namespace DownloadManager.ViewModels
                        (_removeUrl = new RelayCommand(o =>
                        {
                            //TODO delete url function
-                           MessageBox.Show("Item is deleted");
+                           MessageBox.Show(@"Item is deleted");
                        }));
             }
         }
@@ -165,8 +166,8 @@ namespace DownloadManager.ViewModels
                 return _groupFiles ??
                        (_groupFiles = new RelayCommand(o =>
                        {
-                           GetGroupedFiles();
-                           MessageBox.Show(@"Files were grouped in '" + sourcePath+@"' !");
+                           _groupedFiles = GetGroupedFiles();
+                           MessageBox.Show(@"Files were grouped in '" + _sourcePath+@"' !");
                        }));
             }
         }
@@ -186,17 +187,22 @@ namespace DownloadManager.ViewModels
                     if(tmpFolder.GetName()!="root")
                         root.Add(tmpFolder);
                     tmpMonth = file.DateTime.ToString("MM yyyy");
-                    tmpPath = System.IO.Path.Combine(sourcePath, tmpMonth);
+                    tmpPath = System.IO.Path.Combine(_sourcePath, tmpMonth);
                     tmpFolder = new Folder(tmpPath);
                 }
                 tmpFolder.Add(new FileItem(file.FileName));
-                sourceFile = System.IO.Path.Combine(sourcePath, file.FileName);
+                sourceFile = System.IO.Path.Combine(_sourcePath, file.FileName);
                 System.IO.Directory.CreateDirectory(tmpPath);
                 destinationFile = System.IO.Path.Combine(tmpPath, file.FileName);
                 // To move a file or folder to a new location:
                 System.IO.File.Move(sourceFile, destinationFile);
             }
             return root;
+        }
+
+        private void CreateArchive()
+        {
+            //todo create archive from component 
         }
 
         public RelayCommand AllFiles
@@ -209,11 +215,6 @@ namespace DownloadManager.ViewModels
                            FilesList = _filesContext.Files.ToList();
                        }));
             }
-        }
-
-        public HomeViewModel()
-        { 
-            //FilesList = _filesContext.Files.ToList();
         }
 
         private void OnClosing(EventArgs e)
