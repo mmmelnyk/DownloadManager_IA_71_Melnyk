@@ -9,10 +9,6 @@
         Title="NetworkView"
      Height="400" Width="400" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
-        <LinearGradientBrush x:Key="bevelBrush" EndPoint="0.369,-1.362" StartPoint="0.631,2.362">
-            <GradientStop Color="#FF001E56" Offset="0"/>
-            <GradientStop Color="#FFFFFFFF" Offset="1"/>
-        </LinearGradientBrush>
         <DataTemplate x:Key="PeerEntryDataTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -20,51 +16,22 @@
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                    <RowDefinition Height="30px"/>
+                    <RowDefinition Height="30px"/>
                 </Grid.RowDefinitions>
-                <Rectangle RadiusX="10" RadiusY="10" Grid.ColumnSpan="2" Stroke="{DynamicResource bevelBrush}" StrokeThickness="4" >
-                    <Rectangle.Fill>
-                        <LinearGradientBrush EndPoint="0.369,-1.362" StartPoint="0.631,2.362">
-                            <GradientStop Color="#FF1346A6" Offset="0"/>
-                            <GradientStop Color="#FF85ADF6" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                    <Rectangle.BitmapEffect>
-                        <BlurBitmapEffect Radius="3"/>
-                    </Rectangle.BitmapEffect>
-                </Rectangle>
-                <TextBlock Margin="10" Text="{Binding Path=DisplayString}" Padding="4" TextWrapping="Wrap" Width="150" Opacity="0.995" FontFamily="Calibri" FontSize="14" Foreground="#FF8ED1C3" >
-                    <TextBlock.Background>
-                        <RadialGradientBrush>
-                            <GradientStop Color="#FF000000" Offset="0"/>
-                            <GradientStop Color="#FF3C3C3C" Offset="1"/>
-                        </RadialGradientBrush>
-                    </TextBlock.Background>
-                </TextBlock>
-                <Rectangle RadiusX="6" RadiusY="6" Margin="8" Fill="{x:Null}" StrokeThickness="2" >
-                    <Rectangle.Stroke>
-                        <LinearGradientBrush EndPoint="0.631,2.362" StartPoint="0.369,-1.362">
-                            <GradientStop Color="#FF001E56" Offset="0"/>
-                            <GradientStop Color="#FFFFFFFF" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Rectangle.Stroke>
-                </Rectangle>
-                <StackPanel Grid.Column="1">
-                    <Button Name="MessageButton" Margin="10,10,10,10" Height="50" IsEnabled="{Binding Path=ButtonsEnabled}" Content="Message" BorderBrush="{DynamicResource bevelBrush}"/>
-                </StackPanel>
+                <TextBox Margin="3" Text="{Binding Path=DisplayString}" FontSize="14" Grid.Row="0" />
+                <TextBox Margin="3" Text="{Binding Path=MessageString}" FontSize="14" Grid.Row="1"/>
+                <Button Name="MessageButton" Margin="5" Height="50" IsEnabled="{Binding Path=ButtonsEnabled}" Content="Send message" Grid.Column="1" Grid.RowSpan="2"/>
             </Grid>
         </DataTemplate>
     </Window.Resources>
 
     <Window.Background>
-        <LinearGradientBrush EndPoint="0.444,-0.183" StartPoint="0.778,1.12">
-            <GradientStop Color="#FF6199A5" Offset="0"/>
-            <GradientStop Color="#FFFFFFFF" Offset="1"/>
-        </LinearGradientBrush>
+        <ImageBrush ImageSource="../Resources/background.jpg"></ImageBrush>
     </Window.Background>
 
     <StackPanel>
-        <Button Name="RefreshButton" Click="RefreshButton_Click">Обновить</Button>
+        <Button Name="RefreshButton" Click="RefreshButton_Click">Refresh</Button>
         <ListBox Name="PeerList" ItemTemplate="{DynamicResource PeerEntryDataTemplate}" ButtonBase.Click="PeerList_Click" Background="{x:Null}" BorderBrush="{x:Null}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -72,7 +39,7 @@
                     <Setter Property="HorizontalAlignment" Value="Center" />
                 </Style>
             </ListBox.ItemContainerStyle>
-            <p2P:PeerEntry DisplayString="Обновите, чтобы увидеть пиров." ButtonsEnabled="False" />
+            <p2P:PeerEntry DisplayString="Refresh to see peers." MessageString="your message should be here"  ButtonsEnabled="False"/>
         </ListBox>
     </StackPanel>
 </Window>

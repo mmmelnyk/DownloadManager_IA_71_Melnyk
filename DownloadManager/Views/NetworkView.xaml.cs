@@ -6,19 +6,20 @@ using System.Windows;
 using System.Windows.Controls;
 using DownloadManager.P2P;
 using System.Configuration;
+using System.ServiceModel.Channels;
 
 namespace DownloadManager.Views
 {
     /// <summary>
     /// Interaction logic for NetworkView.xaml
     /// </summary>
-    public partial class NetworkView : Window
+    public partial class NetworkView
     {
-        private P2PService localService;
-        private string serviceUrl;
-        private ServiceHost host;
+        private P2PService _localService;
+        private string _serviceUrl;
+        private ServiceHost _host;
         private PeerName peerName;
-        private PeerNameRegistration peerNameRegistration;
+        private PeerNameRegistration _peerNameRegistration;
 
         public NetworkView()
         {
@@ -27,103 +28,99 @@ namespace DownloadManager.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Получение конфигурационной информации из app.config
+            //get config from app.config
             string port = ConfigurationManager.AppSettings["port"];
             string username = ConfigurationManager.AppSettings["username"];
-            string machineName = Environment.MachineName;
             string serviceUrl = null;
 
-            // Установка заголовка окна
-            this.Title = string.Format("P2P приложение - {0}", username);
-
-            //  Получение URL-адреса службы с использованием адресаIPv4 
-            //  и порта из конфигурационного файла
+            // set form title
+            this.Title = string.Format($"P2P node - {username}");
+            
+            //get url-address of service using Ipv4 and port from app config 
             foreach (IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()))
             {
                 if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                    serviceUrl = string.Format("net.tcp://{0}:{1}/P2PService", address, port);
+                    serviceUrl = string.Format($"net.tcp://{address}:{port}/P2PService");
                     break;
                 }
             }
 
-            // Выполнение проверки, не является ли адрес null
+            // check if address is not null
             if (serviceUrl == null)
             {
-                // Отображение ошибки и завершение работы приложения
-                MessageBox.Show(this, "Не удается определить адрес конечной точки WCF.", "Networking Error",
+                MessageBox.Show(this, "Can not define service address WCF.", "Networking Error",
                     MessageBoxButton.OK, MessageBoxImage.Stop);
                 Application.Current.Shutdown();
             }
 
-            // Регистрация и запуск службы WCF
-            localService = new P2PService(this, username);
-            host = new ServiceHost(localService, new Uri(serviceUrl));
+            // registration and run WCF
+            _localService = new P2PService(this, username);
+            _host = new ServiceHost(_localService, new Uri(serviceUrl ?? throw new InvalidOperationException()));
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.None;
-            host.AddServiceEndpoint(typeof(IP2PService), binding, serviceUrl);
+            _host.AddServiceEndpoint(typeof(IP2PService), binding, serviceUrl);
             try
             {
-                host.Open();
+                _host.Open();
             }
             catch (AddressAlreadyInUseException)
             {
-                // Отображение ошибки и завершение работы приложения
-                MessageBox.Show(this, "Не удается начать прослушивание, порт занят.", "WCF Error",
+                MessageBox.Show(this, "Can not listen, the port is busy", "WCF Error",
                    MessageBoxButton.OK, MessageBoxImage.Stop);
                 Application.Current.Shutdown();
             }
 
-            // Создание имени равноправного участника (пира)
+            // Create peer name
             peerName = new PeerName("P2P Sample", PeerNameType.Unsecured);
 
-            // Подготовка процесса регистрации имени равноправного участника в локальном облаке
-            peerNameRegistration = new PeerNameRegistration(peerName, int.Parse(port));
-            peerNameRegistration.Cloud = Cloud.AllLinkLocal;
-
-            // Запуск процесса регистрации
-            peerNameRegistration.Start();
+            // get ready to register participant in the local cloud
+            _peerNameRegistration = new PeerNameRegistration(peerName, int.Parse(port))
+            {
+                Cloud = Cloud.AllLinkLocal
+            };
+            // run registration
+            _peerNameRegistration.Start();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Остановка регистрации
-            peerNameRegistration.Stop();
+            // stop registration
+            _peerNameRegistration.Stop();
 
-            // Остановка WCF-сервиса
-            host.Close();
+            // stop wcf service
+            _host.Close();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            // Создание распознавателя и добавление обработчиков событий
+            // create recognizers and event handlers
             PeerNameResolver resolver = new PeerNameResolver();
             resolver.ResolveProgressChanged +=
-                new EventHandler<ResolveProgressChangedEventArgs>(resolver_ResolveProgressChanged);
+                resolver_ResolveProgressChanged;
             resolver.ResolveCompleted +=
-                new EventHandler<ResolveCompletedEventArgs>(resolver_ResolveCompleted);
+                resolver_ResolveCompleted;
 
-            // Подготовка к добавлению новых пиров
             PeerList.Items.Clear();
             RefreshButton.IsEnabled = false;
 
-            // Преобразование незащищенных имен пиров асинхронным образом
+            // parse names async
             resolver.ResolveAsync(new PeerName("0.P2P Sample"), 1);
         }
 
         void resolver_ResolveCompleted(object sender, ResolveCompletedEventArgs e)
         {
-            // Сообщение об ошибке, если в облаке не найдены пиры
+            // error is no peers
             if (PeerList.Items.Count == 0)
             {
                 PeerList.Items.Add(
                    new PeerEntry
                    {
-                       DisplayString = "Пиры не найдены.",
+                       DisplayString = "No peers found",
                        ButtonsEnabled = false
                    });
             }
-            // Повторно включаем кнопку "обновить"
+            // enable refresh
             RefreshButton.IsEnabled = true;
         }
 
@@ -134,49 +131,46 @@ namespace DownloadManager.Views
             foreach (IPEndPoint ep in peer.EndPointCollection)
             {
                 if (ep.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                {
                     try
                     {
-                        string endpointUrl = string.Format("net.tcp://{0}:{1}/P2PService", ep.Address, ep.Port);
-                        NetTcpBinding binding = new NetTcpBinding();
-                        binding.Security.Mode = SecurityMode.None;
+                        string endpointUrl = string.Format($"net.tcp://{ep.Address}:{ep.Port}/P2PService");
+                        NetTcpBinding binding = new NetTcpBinding {Security = {Mode = SecurityMode.None}};
                         IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
                             binding, new EndpointAddress(endpointUrl));
                         PeerList.Items.Add(
-                           new PeerEntry
-                           {
-                               PeerName = peer.PeerName,
-                               ServiceProxy = serviceProxy,
-                               DisplayString = serviceProxy.GetName(),
-                               ButtonsEnabled = true
-                           });
+                            new PeerEntry
+                            {
+                                PeerName = peer.PeerName,
+                                ServiceProxy = serviceProxy,
+                                DisplayString = serviceProxy.GetName(),
+                                ButtonsEnabled = true
+                            });
                     }
                     catch (EndpointNotFoundException)
                     {
                         PeerList.Items.Add(
-                           new PeerEntry
-                           {
-                               PeerName = peer.PeerName,
-                               DisplayString = "Неизвестный пир",
-                               ButtonsEnabled = false
-                           });
+                            new PeerEntry
+                            {
+                                PeerName = peer.PeerName,
+                                DisplayString = "Unknown peer",
+                                ButtonsEnabled = false
+                            });
                     }
-                }
             }
         }
 
         private void PeerList_Click(object sender, RoutedEventArgs e)
         {
-            // Убедимся, что пользователь щелкнул по кнопке с именем MessageButton
             if (((Button)e.OriginalSource).Name == "MessageButton")
             {
-                // Получение пира и прокси, для отправки сообщения
-                PeerEntry peerEntry = ((Button)e.OriginalSource).DataContext as PeerEntry;
+                // get peer and proxy to send a message
+                var peerEntry = ((Button)e.OriginalSource).DataContext as PeerEntry;
                 if (peerEntry != null && peerEntry.ServiceProxy != null)
                 {
                     try
                     {
-                        peerEntry.ServiceProxy.SendMessage("Привет друг!", ConfigurationManager.AppSettings["username"]);
+                        var message = peerEntry.MessageString;
+                        peerEntry.ServiceProxy.SendMessage($"Hi there! {message}", ConfigurationManager.AppSettings["username"]);
                     }
                     catch (CommunicationException)
                     {
@@ -186,10 +180,10 @@ namespace DownloadManager.Views
             }
         }
 
-        internal void DisplayMessage(string message, string from)
+        internal void DisplayMessage(string message, string sender)
         {
-            // Показать полученное сообщение (вызывается из службы WCF)
-            MessageBox.Show(this, message, string.Format("Сообщение от {0}", from),
+            // Show received message (called from wcf)
+            MessageBox.Show(this, message, string.Format("Message from {0}", sender),
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }

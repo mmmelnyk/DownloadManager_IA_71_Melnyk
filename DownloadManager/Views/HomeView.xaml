@@ -16,12 +16,12 @@
     </Window.Background>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="116*"/>
+            <ColumnDefinition Width="331*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -38,28 +38,28 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Command="{Binding AddUrl}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding AddUrl}" Margin="17,3" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" BorderBrush="#FF18CBE8" Width="33">
             <Image Source="../Resources/ico-add-link-80.png"/>
         </Button>
-        <Button Command="{Binding RemoveUrl}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding RemoveUrl}" Margin="17,3" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" BorderBrush="#FF18CBE8" Width="33">
             <Image Source="../Resources/ico-delete-link-80.png"/>
         </Button>
-        <Button Command="{Binding OpenSetting}" Margin="14,3" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding OpenSetting}" Margin="17,3" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="0" BorderBrush="#FF18CBE8" Width="33">
             <Image Source="../Resources/ico-settings-64.png"/>
         </Button>
-        <Button Command="{Binding AllFiles}" Margin="4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding AllFiles}" Margin="4,4,0,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8" Width="44">
             All Files
         </Button>
-        <Button Command="{Binding TodayFiles}" Margin="4" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding TodayFiles}" Margin="7,4,1,4" HorizontalAlignment="Center" Grid.Column="4" Grid.Row="0" BorderBrush="#FF18CBE8" Width="108">
             Downloaded today
         </Button>
-        <Button Command="{Binding BiggestFiles}" Margin="56,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding BiggestFiles}" Margin="56,4,0,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8" Width="70">
             Biggest Files
         </Button>
-        <Button Command="{Binding GroupFiles}" Margin="136,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding GroupFiles}" Margin="136,4,0,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8" Width="64">
             Group Files
         </Button>
-        <Button Command="{Binding Network}" Margin="210,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+        <Button Command="{Binding Network}" Margin="210,4,0,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8" Width="49">
             Network
         </Button>
     </Grid>

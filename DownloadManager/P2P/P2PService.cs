@@ -1,6 +1,4 @@
-﻿using System;
-using System.ServiceModel;
-using System.Windows.Forms;
+﻿using System.ServiceModel;
 using DownloadManager.Views;
 
 namespace DownloadManager.P2P

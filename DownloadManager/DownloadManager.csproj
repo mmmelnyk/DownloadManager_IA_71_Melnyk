@@ -124,7 +124,6 @@
     <Compile Include="Models\OpenCommand.cs" />
     <Compile Include="Models\FilesToday.cs" />
     <Compile Include="P2P\IP2PService.cs" />
-    <Compile Include="P2P\P2PManager.cs" />
     <Compile Include="P2P\P2PService.cs" />
     <Compile Include="P2P\PeerEntry.cs" />
     <Compile Include="RelayCommand.cs" />
