@@ -36,3 +36,4 @@ F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\Newtonsoft
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\NetworkView.g.cs
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\NetworkView.baml
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csprojAssemblyReference.cache
