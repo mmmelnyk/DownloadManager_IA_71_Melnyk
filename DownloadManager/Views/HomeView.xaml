@@ -59,5 +59,8 @@
         <Button Command="{Binding GroupFiles}" Margin="136,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
             Group Files
         </Button>
+        <Button Command="{Binding Network}" Margin="210,4,4,4" HorizontalAlignment="Left" Grid.Column="5" Grid.Row="0" BorderBrush="#FF18CBE8">
+            Network
+        </Button>
     </Grid>
 </Window>

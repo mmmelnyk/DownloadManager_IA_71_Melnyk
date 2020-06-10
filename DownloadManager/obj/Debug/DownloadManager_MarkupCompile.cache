@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\App.xaml
-4510760357
+5-1501097306
 2-307485242
-28702108338
-181355638140
-Views\AddUrlView.xaml;Views\DownloadView.xaml;Views\HomeView.xaml;Views\SettingView.xaml;
+331001483595
+32-1529769153
+Views\AddUrlView.xaml;Views\DownloadView.xaml;Views\HomeView.xaml;Views\NetworkView.xaml;Views\SettingView.xaml;
 
-True
+False
 

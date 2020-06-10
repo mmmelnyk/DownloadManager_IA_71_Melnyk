@@ -24,6 +24,15 @@ F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\EntityFram
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\EntityFramework.SqlServer.dll
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\EntityFramework.xml
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\EntityFramework.SqlServer.xml
-F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csprojAssemblyReference.cache
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager_Content.g.cs
 F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\DownloadManager.csproj.CopyComplete
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\Newtonsoft.Json.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\System.Reflection.DispatchProxy.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\System.Security.AccessControl.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\System.Security.Cryptography.Xml.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\System.Security.Permissions.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\System.Security.Principal.Windows.dll
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\bin\Debug\Newtonsoft.Json.xml
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\NetworkView.g.cs
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\projects\c#\DownloadManager_IA_71_Melnyk\DownloadManager\obj\Debug\Views\NetworkView.baml

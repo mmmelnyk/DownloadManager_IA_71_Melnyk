@@ -66,10 +66,26 @@ namespace DownloadManager.ViewModels
         private RelayCommand _allFiles;
         private RelayCommand _biggestFiles;
         private RelayCommand _groupFiles;
+        private RelayCommand _network;
         private List<File> _filesList = new List<File>();
         private readonly FilesContext _filesContext = new FilesContext();
         private readonly string _sourcePath = Properties.Settings.Default.Path;
         private Folder _groupedFiles;
+
+        public RelayCommand Network
+        {
+            get { return _network ?? (_network = new RelayCommand(o =>
+            {
+                // Create receiver, command, and invoker
+                NetworkView networkView = new NetworkView();
+                Command command = new OpenCommand(networkView);
+                Invoker invoker = new Invoker();
+
+                // Set and execute command
+                invoker.SetCommand(command);
+                invoker.ExecuteCommand();
+            })); }
+        }
 
         public List<File> FilesList
         {
